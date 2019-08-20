@@ -10,6 +10,6 @@ class RnnNetwork(nn.Module):
         self.fc = nn.Sequential(nn.Linear(hidden_dim, output_size), nn.ReLU())
 
     def forward(self, X):
-        each_out, out = self.rnn(X)
+        _, out = self.rnn(X)
         out = self.fc(out)
         return out

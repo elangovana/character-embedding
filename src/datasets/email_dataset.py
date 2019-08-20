@@ -9,6 +9,7 @@ myemail@gmail.com,"N"
 test@yahoo.com,"Y"
 """
 
+
 class EmailDataset(Dataset):
 
     def __init__(self, file_or_handle):
@@ -26,7 +27,7 @@ class EmailDataset(Dataset):
 
     @property
     def max_feature_lens(self):
-        return []
+        return [254]
 
     def _load_csv_file(self, file_or_handle):
         if isinstance(file_or_handle, str):

@@ -2,6 +2,12 @@ import csv
 
 from torch.utils.data import Dataset
 
+"""
+Simple email dataset, csv separated. E.g.
+
+myemail@gmail.com,"N"
+test@yahoo.com,"Y"
+"""
 
 class EmailDataset(Dataset):
 
@@ -17,6 +23,10 @@ class EmailDataset(Dataset):
     @property
     def num_classes(self):
         return 2
+
+    @property
+    def max_feature_lens(self):
+        return []
 
     def _load_csv_file(self, file_or_handle):
         if isinstance(file_or_handle, str):

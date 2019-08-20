@@ -22,7 +22,7 @@ class TransformTextToIndex:
     def transform(self, dataloader):
         """
 Expects a list of batches where each batch a 2-tuple, bx and by.
-Size of bx is equal to number of columns. And each column contains a list fo values
+len of bx is equal to number of columns. And each column contains a list fo values
 
         :param dataloader:
         """

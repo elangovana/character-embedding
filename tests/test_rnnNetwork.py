@@ -2,7 +2,7 @@ from unittest import TestCase
 
 import torch
 
-from src.RnnNetwork import RnnNetwork
+from src.rnn_network import RnnNetwork
 
 
 class TestRnnNetwork(TestCase):

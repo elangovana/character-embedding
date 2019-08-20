@@ -14,6 +14,11 @@ class TransformTextToIndex:
     def pad_index(self):
         return len(self.all_letters)
 
+    @property
+    def max_index(self):
+        # All characters + pad
+        return len(self.all_letters) + 1
+
     def transform(self, dataloader):
         """
 Expects a list of batches where each batch a 2-tuple, bx and by.
@@ -35,7 +40,6 @@ Size of bx is equal to number of columns. And each column contains a list fo val
         return result
 
     def _transform_text(self, text, length):
-        print(text)
         result = [self.all_letters.find(c) for c in text[0:length]]
         result = result + [self.pad_index] * (length - len(result))
 

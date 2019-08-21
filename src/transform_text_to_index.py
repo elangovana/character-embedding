@@ -1,5 +1,7 @@
 import string
 
+import torch
+
 
 class TransformTextToIndex:
 
@@ -34,6 +36,7 @@ len of bx is equal to number of columns. And each column contains a list fo valu
                 transformed_rc = []
                 for r in c:
                     transformed_rc.append(self._transform_text(r, col_len))
+                transformed_rc = torch.Tensor(transformed_rc).long()
                 transformed_cols.append(transformed_rc)
             result.append([transformed_cols, by])
 

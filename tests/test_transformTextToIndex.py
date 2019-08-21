@@ -1,5 +1,7 @@
 from unittest import TestCase
 
+import torch
+
 from transform_text_to_index import TransformTextToIndex
 
 
@@ -43,19 +45,19 @@ class TestTransformTextToIndex(TestCase):
                 # bx
                 [
                     # c1
-                    [
+                    torch.tensor([
                         # 3 rows of character to index all fixed to same length
                         [29, 14, 28, 29, 1],
                         [29, 14, 28, 29, 2],
                         [29, 14, 28, 29, 2]
-                    ],
+                    ]),
                     # c2
-                    [
+                    torch.tensor([
                         # 3 rows
                         [28, 10, 22, 25, 21, 14, 94, 13, 10, 29],
                         [54, 10, 22, 25, 21, 14, 94, 13, 10, 29],
                         [54, 10, 22, 25, 21, 14, 94, 13, 10, 29]
-                    ]
+                    ])
                 ],
                 # by
                 ['NO', 'NO', 'YES']
@@ -66,4 +68,9 @@ class TestTransformTextToIndex(TestCase):
         actual = sut.transform(input_data)
 
         # Assert
-        self.assertEqual(expected, actual)
+        for (be_x, be_y), (ba_x, ba_y) in zip(expected, actual):
+            # Make sure column tensors match
+            for ce, ca in zip(be_x, ba_x):
+                self.assertEqual(ce.tolist(), ca.tolist())
+            # Make sure labels match
+            self.assertEqual(be_y, ba_y)

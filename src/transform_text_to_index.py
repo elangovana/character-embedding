@@ -21,6 +21,9 @@ class TransformTextToIndex:
         # All characters + pad
         return len(self.all_letters) + 1
 
+    def fit(self, dataloader):
+        pass
+
     def transform(self, dataloader):
         """
 Expects a list of batches where each batch a 2-tuple, bx and by.

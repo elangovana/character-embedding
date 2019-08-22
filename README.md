@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/elangovana/character-embedding.svg?branch=master)](https://travis-ci.org/elangovana//character-embedding)
+
 # RNN Classification
 
 ## How to run

@@ -86,20 +86,21 @@ class Train:
             train_accuracy = total_correct * 100.0 / total_items
 
             # Validation loss
-            val_loss, val_accuracy = self._compute_validation_loss(val_data, model, loss_func)
+            val_loss, val_accuracy, val_prediction = self._compute_validation_loss(val_data, model, loss_func)
 
             if best_loss is None:
                 best_loss = val_loss
 
             # Save snapshots
-            if abs(val_loss) < abs(best_loss):
+            # TODO Check negative loss
+            if val_loss < best_loss:
                 self.snapshotter.save(model, output_dir=output_dir, prefix="snapshot_lowest_loss_")
 
             # Patience, early stopping
             if previous_loss is None:
                 previous_loss = val_loss
 
-            if val_loss > previous_loss:
+            if val_loss >= previous_loss:
                 patience += 1
             else:
                 # Reset patience if loss decreases
@@ -112,7 +113,7 @@ class Train:
                 self.logger.info("No decrease in loss for {} epochs and hence stopping".format(self.patience_epochs))
                 break
 
-            previous_loss = val_loss
+            previous_loss = abs(val_loss)
 
         self.results_writer.dump_object(result_logs, output_dir, "epochs_loss")
 
@@ -124,10 +125,13 @@ class Train:
         n_batches = 0
 
         # No grad
+        predicted_items = []
+        target_items = []
         with torch.no_grad():
             total_correct = 0
             total_items = 0
             for i, (b_x, target) in enumerate(val_data):
+                target_items.extend(target.tolist())
                 # Copy to device
                 b_x = b_x.to(device=self.device)
                 target = target.to(device=self.device)
@@ -144,7 +148,16 @@ class Train:
                 correct = (predicted_item == target).sum()
                 total_correct += correct
                 total_items += predicted_item.shape[0]
+                predicted_items.extend(predicted_item.tolist())
 
         average_loss = total_loss / n_batches
         accuracy = total_correct * 100.0 / total_items
-        return average_loss, accuracy
+        self._print_confusion_matrix(target_items, predicted_items)
+
+        return average_loss, accuracy, predicted_items
+
+    def _print_confusion_matrix(self, y_actual, y_pred):
+        from sklearn.metrics import confusion_matrix
+        cnf_matrix = confusion_matrix(y_actual, y_pred)
+
+        print("Confusion matrix,  \n{}".format(cnf_matrix))

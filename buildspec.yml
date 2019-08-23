@@ -30,7 +30,7 @@ phases:
 
       ## Tests passed, so build docker
       - echo Building the Docker image...
-      - cd src
+
 
       ## TODO: Automate version tagging based on datetime for now, ideally should be tied to release tags
       - export LATEST_TAG=latest

@@ -2,25 +2,26 @@ from unittest import TestCase
 
 import torch
 
-from src.rnn_network import RnnNetwork
+from bilstm_network import BiLstmNetwork
 
 
-class TestRnnNetwork(TestCase):
+class TestBiLstmNetwork(TestCase):
     def test__call__(self):
         # Arrange
 
-        batch_size = 2
+        batch_size = 32
         one_hot_vec_size = 27
         hidden_layer_size = 10
         output_size = 2
         n_layers = 2
 
-        input = torch.randint(0, one_hot_vec_size - 1, (batch_size, 15))
+        max_input_length = 15
+        input = torch.randint(0, one_hot_vec_size - 1, (batch_size, max_input_length))
         expected_shape = (batch_size, output_size)
 
         # sut
-        sut = RnnNetwork(input_size=one_hot_vec_size, hidden_dim=hidden_layer_size, output_size=output_size,
-                         n_layers=n_layers)
+        sut = BiLstmNetwork(input_size=one_hot_vec_size, hidden_dim=hidden_layer_size, output_size=output_size,
+                            n_layers=n_layers)
 
         # Act
         acutal = sut(input)
@@ -34,6 +35,6 @@ class TestRnnNetwork(TestCase):
         expected = [[[0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
                      [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]]]
         # Act
-        actual = RnnNetwork._one_hot_encode(input, one_hot_vec_size)
+        actual = BiLstmNetwork._one_hot_encode(input, one_hot_vec_size)
 
         self.assertEqual(expected, actual.tolist())

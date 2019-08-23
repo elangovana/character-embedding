@@ -50,7 +50,7 @@ class RnnNetwork(nn.Module):
         input = self._one_hot_encode(X, self.input_size)
 
         # Pass through network
-        out, hidden = self.rnn(input)
+        out, _ = self.rnn(input)
 
         # # Get final rnn layer output
         # # Obtain the last timestep output

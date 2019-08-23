@@ -47,7 +47,7 @@ class BiLstmNetwork(nn.Module):
         input = self._one_hot_encode(X, self.input_size)
 
         # Pass through network
-        out, (hidden, cell) = self.lstm(input)
+        out, (_, _) = self.lstm(input)
 
         # Get final timestep
         # TODO: check what the final is for bilstm

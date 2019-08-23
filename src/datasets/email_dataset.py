@@ -5,8 +5,11 @@ from torch.utils.data import Dataset
 """
 Simple email dataset, csv separated. E.g.
 
-myemail@gmail.com,"N"
-test@yahoo.com,"Y"
+Y,afhg11@domain.com
+N,afhg22@domain.com
+Y,afhg33@domain.com
+N,afhg44@domain.com
+
 """
 
 
@@ -19,7 +22,12 @@ class EmailDataset(Dataset):
         return len(self._labels)
 
     def __getitem__(self, index):
-        return self._features[index], self._labels[index]
+        name = self._features[index]
+
+        # Get the name from the email, e.g aaa from aa@domain.com
+        if "@" in name:
+            name = name.split("@")[0]
+        return name, self._labels[index]
 
     @property
     def num_classes(self):
@@ -27,7 +35,7 @@ class EmailDataset(Dataset):
 
     @property
     def max_feature_lens(self):
-        return [254]
+        return [100]
 
     def _load_csv_file(self, file_or_handle):
         if isinstance(file_or_handle, str):

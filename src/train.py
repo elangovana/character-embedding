@@ -41,6 +41,7 @@ class Train:
         self._results_writer = value
 
     def run(self, train_data, val_data, model, loss_func, optimiser, output_dir):
+        self.logger.info("Running training...")
 
         model.to(device=self.device)
         best_loss = None
@@ -59,6 +60,7 @@ class Train:
                 n_batches = i + 1
                 # Set up train mode
                 model.train()
+                len = b_x.shape[0]
 
                 # Copy to device
                 b_x = b_x.to(device=self.device)
@@ -81,6 +83,8 @@ class Train:
                 correct = (predicted_item == target).sum()
                 total_correct += correct
                 total_items += predicted_item.shape[0]
+                self.logger.debug(
+                    "Batch {}/{}, total correct {}. loss {}".format(i, e, (correct * 100 / len), loss.item()))
 
             train_loss = train_total_loss / n_batches
             train_accuracy = total_correct * 100.0 / total_items

@@ -16,9 +16,9 @@
 from torch.nn import NLLLoss
 from torch.optim import SGD
 
+from bilstm_network import BiLstmNetwork
 from data_pipeline import DataPipeline
 from label_pipeline import LabelPipeline
-from rnn_network import RnnNetwork
 from train import Train
 from train_pipeline import TrainPipeline
 from transform_label_encoder import TransformLabelEncoder
@@ -59,9 +59,9 @@ class CharacterRnnTrainBuilder:
         label_pipeline = LabelPipeline(label_encoder=label_encoder, label_reshaper=label_reshaper)
 
         # Train pipeline
-        model = RnnNetwork(input_size=text_to_index.max_index,
-                           hidden_dim=self.hidden_dim,
-                           output_size=train_dataset.num_classes)
+        model = BiLstmNetwork(input_size=text_to_index.max_index,
+                              hidden_dim=self.hidden_dim,
+                              output_size=train_dataset.num_classes)
 
         optimiser = SGD(lr=self.learning_rate, params=model.parameters())
         loss_func = NLLLoss()

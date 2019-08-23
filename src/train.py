@@ -86,7 +86,7 @@ class Train:
             train_accuracy = total_correct * 100.0 / total_items
 
             # Validation loss
-            val_loss, val_accuracy, val_prediction = self._compute_validation_loss(val_data, model, loss_func)
+            val_loss, val_accuracy = self._compute_validation_loss(val_data, model, loss_func)
 
             if best_loss is None:
                 best_loss = val_loss
@@ -154,7 +154,7 @@ class Train:
         accuracy = total_correct * 100.0 / total_items
         self._print_confusion_matrix(target_items, predicted_items)
 
-        return average_loss, accuracy, predicted_items
+        return average_loss, accuracy
 
     def _print_confusion_matrix(self, y_actual, y_pred):
         from sklearn.metrics import confusion_matrix

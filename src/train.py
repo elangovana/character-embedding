@@ -92,7 +92,7 @@ class Train:
                 best_loss = val_loss
 
             # Save snapshots
-            if val_loss < best_loss:
+            if abs(val_loss) < abs(best_loss):
                 self.snapshotter.save(model, output_dir=output_dir, prefix="snapshot_lowest_loss_")
 
             # Patience, early stopping

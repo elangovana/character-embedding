@@ -110,14 +110,20 @@ class Train:
                 # Reset patience if loss decreases
                 patience = 0
 
-            print("###score### {} {} {} {} {}".format(e, train_loss, val_loss, train_accuracy, val_accuracy))
+            print("###score: train_loss### {}".format(train_loss))
+            print("###score: val_loss### {}".format(val_loss, train_accuracy))
+            print("###score: train_accuracy### {}".format(train_accuracy))
+            print("###score: val_accuracy### {}".format(val_accuracy))
+            # TODO: ADD F-SCORE
+            # print("###score: train_f_score### {}").format("")
+            # print("###score: val_f_score### {}".format(""))
             result_logs.append([e, train_loss, val_loss, train_accuracy.item(), val_accuracy.item()])
 
             if self.early_stopping and patience > self.patience_epochs:
                 self.logger.info("No decrease in loss for {} epochs and hence stopping".format(self.patience_epochs))
                 break
 
-            previous_loss = abs(val_loss)
+            previous_loss = val_loss
 
         self.results_writer.dump_object(result_logs, output_dir, "epochs_loss")
 
@@ -160,8 +166,22 @@ class Train:
 
         return average_loss, accuracy
 
-    def _print_confusion_matrix(self, y_actual, y_pred):
+    @staticmethod
+    def _print_confusion_matrix(y_actual, y_pred):
         from sklearn.metrics import confusion_matrix
         cnf_matrix = confusion_matrix(y_actual, y_pred)
 
         print("Confusion matrix,  \n{}".format(cnf_matrix))
+
+    # TODO: implement this, f-score..
+    #  @staticmethod
+    # def _get_f_score(y_acutal, y_pred, num_classes):
+    #     F1Score = torch.zeros(len(classes))
+    #     for cls in range(len(classes)):
+    #         try:
+    #             F1Score[cls] = 2. * confusion[cls, cls] / (np.sum(confusion[cls, :]) + np.sum(confusion[:, cls]))
+    #         except:
+    #             pass
+    #     print("F1Score: ")
+    #     for cls, score in enumerate(F1Score):
+    #         print("{}: {:.2f}".format(classes[cls], score))

@@ -10,8 +10,8 @@ phases:
       - pip install pytest==3.6.3
       - pip install pyflakes==2.0.0
        ## CONFIGURE THIS: Repo name, please make sure this repo exists in ECR
-      - export projectname=image-embedding
-      - export IMAGE_REPO_NAME=image-embedding
+      - export projectname=character-embedding
+      - export IMAGE_REPO_NAME=character-embedding
       - export PYTORCH_VERSION=1.0.0
       # AWS cli version to login into ecr. This needs to be compatible with the version of boto3 in the requirements file
       - export awscli_version=1.16.35

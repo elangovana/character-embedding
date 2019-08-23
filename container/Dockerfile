@@ -7,7 +7,6 @@ ENV PATH="/opt/ml/code:${PATH}"
 
 ENV SAGEMAKER_SUBMIT_DIRECTORY /opt/ml/code
 
-RUN ls -l
 
 COPY ./src/requirements.txt /opt/ml/code/
 

@@ -26,6 +26,8 @@ class RnnNetwork(nn.Module):
         self.rnn = nn.RNN(input_size, hidden_dim, n_layers, batch_first=True, nonlinearity='tanh')
         # Fully connected layer
         self.fc = nn.Sequential(nn.Linear(hidden_dim, output_size), nn.ReLU())
+        # softmax
+        self.softmax = nn.Softmax(dim=1)
 
     def forward(self, X):
         """
@@ -56,6 +58,10 @@ class RnnNetwork(nn.Module):
 
         # FC
         out = self.fc(out)
+
+        # Softmax
+        out = self.softmax(out)
+
         return out
 
     @staticmethod

@@ -277,7 +277,32 @@
           ]
         }
       }
+    },
+    "ecr_repo": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:ecr:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":repository/",
+              {
+                "Ref": "dockerImageRepository"
+              }
+            ]
+          ]
+        }
+      }
     }
   },
   "Outputs": {}
 }
+

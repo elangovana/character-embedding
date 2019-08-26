@@ -22,7 +22,7 @@ phases:
     commands:
       # Run Tests
       - echo Building project $projectname
-      - pip install -r src/requirements.txt
+      - pip install -r src/requirements_dev.txt
       - pip install -r tests/requirements.txt
       - pyflakes ./**/*.py
       - export PYTHONPATH=./src

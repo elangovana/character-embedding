@@ -13,3 +13,7 @@ COPY ./src/requirements_dev.txt /opt/ml/code/
 RUN pip install -r /opt/ml/code/requirements_dev.txt
 
 ENV SAGEMAKER_SUBMIT_DIRECTORY /opt/ml/code
+
+WORKDIR /opt/ml/code
+
+ENTRYPOINT ["bash"]

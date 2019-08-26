@@ -12,5 +12,3 @@ COPY ./src/requirements_dev.txt /opt/ml/code/
 RUN pip install -r /opt/ml/code/requirements_dev.txt
 
 WORKDIR /opt/ml/code
-
-CMD ["bash"]

@@ -13,4 +13,4 @@ RUN pip install -r /opt/ml/code/requirements_dev.txt
 
 WORKDIR /opt/ml/code
 
-ENTRYPOINT ["bash"]
+CMD ["bash"]

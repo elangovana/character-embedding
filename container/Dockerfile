@@ -11,3 +11,5 @@ ENV SAGEMAKER_SUBMIT_DIRECTORY /opt/ml/code
 COPY ./src/requirements.txt /opt/ml/code/
 
 RUN pip install -r /opt/ml/code/requirements.txt
+
+WORKDIR  /opt/ml/code/

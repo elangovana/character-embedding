@@ -63,7 +63,6 @@ class Train:
             for i, (b_x, target) in enumerate(train_data):
                 # use this for confusion matrix later
                 target_items.extend(target.tolist())
-                n_batches = i + 1
 
                 # Set up train mode
                 model.train()
@@ -96,7 +95,7 @@ class Train:
                     "Batch {}/{}, total correct {}. loss {}".format(i, e, (correct * 100 / len), loss.item()))
 
             self.logger.info("---Completed epoch {} of {}------".format(e, self.epochs))
-            train_loss = train_total_loss / n_batches
+            train_loss = train_total_loss
             train_accuracy = total_correct * 100.0 / total_items
             # Train confusion matrix
             self._print_confusion_matrix(target_items, predicted_items, "Train")
@@ -163,7 +162,6 @@ class Train:
 
                 # Total loss
                 total_loss += val_loss.item()
-                n_batches = i + 1
 
                 # Accuracy
                 predicted_item = torch.max(predicted_score, dim=1)[1]
@@ -172,7 +170,7 @@ class Train:
                 total_items += predicted_item.shape[0]
                 predicted_items.extend(predicted_item.tolist())
 
-        average_loss = total_loss / n_batches
+        average_loss = total_loss
         accuracy = total_correct * 100.0 / total_items
         self._print_confusion_matrix(target_items, predicted_items, "Validation ")
 

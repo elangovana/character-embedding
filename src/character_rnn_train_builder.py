@@ -12,8 +12,7 @@
 # express or implied. See the License for the specific language governing
 # permissions and limitations under the License.
 # #############################################################################
-
-from torch.nn import NLLLoss
+from torch import nn
 from torch.optim import SGD
 
 from bilstm_network import BiLstmNetwork
@@ -64,7 +63,7 @@ class CharacterRnnTrainBuilder:
                               output_size=train_dataset.num_classes)
 
         optimiser = SGD(lr=self.learning_rate, params=model.parameters())
-        loss_func = NLLLoss()
+        loss_func = nn.CrossEntropyLoss()
         train_pipeline = TrainPipeline(batch_size=self.batch_size,
                                        optimiser=optimiser,
                                        trainer=trainer,

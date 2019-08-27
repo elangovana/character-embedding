@@ -6,7 +6,7 @@ FROM ${AWS_PYTORCH_SAGEMAKER_ECR_ACCOUNT}.dkr.ecr.$REGION.amazonaws.com/sagemake
 #NOTE: Do not create the /opt/ml/code directory.. Else downloading the code from s3 fails during runtime...
 #ENV sagemaker_submit_directory /opt/ml/code
 
-COPY requirements_dev.txt /tmp
+COPY ./src/requirements_dev.txt  /tmp
 
 RUN pip install -r /tmp/requirements_dev.txt && rm /tmp/requirements_dev.txt
 

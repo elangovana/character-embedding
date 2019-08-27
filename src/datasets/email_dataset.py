@@ -1,4 +1,5 @@
 import csv
+import logging
 
 from torch.utils.data import Dataset
 
@@ -37,8 +38,13 @@ class EmailDataset(Dataset):
     def max_feature_lens(self):
         return [100]
 
+    @property
+    def logger(self):
+        return logging.getLogger(__name__)
+
     def _load_csv_file(self, file_or_handle):
         if isinstance(file_or_handle, str):
+            self.logger.info("Loading file {}".format(file_or_handle))
             with open(file_or_handle, "r") as f:
                 return self._load_csv_handle(f)
 

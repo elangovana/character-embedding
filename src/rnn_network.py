@@ -69,7 +69,7 @@ class RnnNetwork(nn.Module):
         # Change shape from  (batch, features) to (batch, features, 1)
         view = batch.view(batch.size() + torch.Size([1]))
         # Create zero tensor of shape (batch, features, depth)
-        zeros = torch.zeros((batch.size() + torch.Size([input_size_depth])))
+        zeros = torch.zeros((batch.size() + torch.Size([input_size_depth])), device=batch.device)
 
         input = zeros.scatter_(2, view, 1)
         return input

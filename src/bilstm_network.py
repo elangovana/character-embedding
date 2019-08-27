@@ -44,10 +44,11 @@ class BiLstmNetwork(nn.Module):
         """
         last_timestep = X.shape[1] - 1
         # One hot encode..
+
         input = self._one_hot_encode(X, self.input_size)
 
         # Pass through network
-        out, (_, _) = self.lstm(input)
+        out, (_, _) = self.lstm(input, )
 
         # Get final timestep
         # TODO: check what the final is for bilstm
@@ -62,7 +63,8 @@ class BiLstmNetwork(nn.Module):
         # Change shape from  (batch, features) to (batch, features, 1)
         view = batch.view(batch.size() + torch.Size([1]))
         # Create zero tensor of shape (batch, features, depth)
-        zeros = torch.zeros((batch.size() + torch.Size([input_size_depth])))
+
+        zeros = torch.zeros((batch.size() + torch.Size([input_size_depth])), device=batch.device)
 
         input = zeros.scatter_(2, view, 1)
         return input

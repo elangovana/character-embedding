@@ -95,6 +95,7 @@ class Train:
                 self.logger.debug(
                     "Batch {}/{}, total correct {}. loss {}".format(i, e, (correct * 100 / len), loss.item()))
 
+            self.logger.info("---Completed epoch {} of {}------".format(e, self.epochs))
             train_loss = train_total_loss / n_batches
             train_accuracy = total_correct * 100.0 / total_items
             # Train confusion matrix

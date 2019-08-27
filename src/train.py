@@ -49,7 +49,11 @@ class Train:
         patience = 0
         previous_loss = None
         result_logs = []
+
         for e in range(self.epochs):
+
+            predicted_items = []
+            target_items = []
 
             n_batches = 0
             train_total_loss = 0
@@ -57,7 +61,10 @@ class Train:
             total_items = 0
 
             for i, (b_x, target) in enumerate(train_data):
+                # use this for confusion matrix later
+                target_items.extend(target.tolist())
                 n_batches = i + 1
+
                 # Set up train mode
                 model.train()
                 len = b_x.shape[0]
@@ -83,11 +90,15 @@ class Train:
                 correct = (predicted_item == target).sum()
                 total_correct += correct
                 total_items += predicted_item.shape[0]
+                predicted_items.extend(predicted_item.tolist())
+
                 self.logger.debug(
                     "Batch {}/{}, total correct {}. loss {}".format(i, e, (correct * 100 / len), loss.item()))
 
             train_loss = train_total_loss / n_batches
             train_accuracy = total_correct * 100.0 / total_items
+            # Train confusion matrix
+            self._print_confusion_matrix(target_items, predicted_items, "Train")
 
             # Validation loss
             val_loss, val_accuracy = self._compute_validation_loss(val_data, model, loss_func)
@@ -111,7 +122,7 @@ class Train:
                 patience = 0
 
             print("###score: train_loss### {}".format(train_loss))
-            print("###score: val_loss### {}".format(val_loss, train_accuracy))
+            print("###score: val_loss### {}".format(val_loss))
             print("###score: train_accuracy### {}".format(train_accuracy))
             print("###score: val_accuracy### {}".format(val_accuracy))
             # TODO: ADD F-SCORE
@@ -162,16 +173,16 @@ class Train:
 
         average_loss = total_loss / n_batches
         accuracy = total_correct * 100.0 / total_items
-        self._print_confusion_matrix(target_items, predicted_items)
+        self._print_confusion_matrix(target_items, predicted_items, "Validation ")
 
         return average_loss, accuracy
 
     @staticmethod
-    def _print_confusion_matrix(y_actual, y_pred):
+    def _print_confusion_matrix(y_actual, y_pred, title):
         from sklearn.metrics import confusion_matrix
         cnf_matrix = confusion_matrix(y_actual, y_pred)
 
-        print("Confusion matrix,  \n{}".format(cnf_matrix))
+        print("{} Confusion matrix,  \n{}".format(title, cnf_matrix))
 
     # TODO: implement this, f-score..
     #  @staticmethod

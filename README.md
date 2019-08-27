@@ -8,5 +8,5 @@
 
     ```bash
     export PYTHONPATH=./src
-    python src/experiment_email.py tests/data/sample.csv tests/data/sample.csv /tmp
+    python src/experiment_email.py --traindir tests/data --traindir tests/data/ --outdir /tmp
     ```

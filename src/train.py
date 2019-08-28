@@ -122,13 +122,13 @@ class Train:
                 self.logger.info("Snapshotting as current loss {} is < previous best {}".format(val_loss, best_loss))
                 self.snapshotter.save(model, output_dir=output_dir, prefix="snapshot_lowest_loss_")
                 best_loss = val_loss
-
-            # Patience, early stopping
-            if previous_loss is not None and val_loss >= previous_loss:
-                patience += 1
-            else:
                 # Reset patience if loss decreases
                 patience = 0
+            else:
+                # No increase in best loss so increase patience counter
+                patience += 1
+
+
 
             print("###score: train_loss### {}".format(train_loss))
             print("###score: val_loss### {}".format(val_loss))
@@ -150,8 +150,6 @@ class Train:
                 break
             else:
                 self.logger.info("Patience is {}".format(patience))
-
-            previous_loss = val_loss
 
         self.results_writer.dump_object(result_logs, output_dir, "epochs_loss")
 

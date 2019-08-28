@@ -26,7 +26,7 @@ from transform_merge_tensors import TransformMergeTensors
 from transform_text_to_index import TransformTextToIndex
 
 
-class CharacterRnnTrainBuilder:
+class CharacterTrainBuilder:
 
     def __init__(self, epochs=50, early_stopping=True, patience_epochs=30, batch_size=32, num_workers=None, **kwargs):
         self.batch_size = batch_size

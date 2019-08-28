@@ -18,7 +18,7 @@ import logging
 import os
 import sys
 
-from character_rnn_train_builder import CharacterRnnTrainBuilder
+from character_train_builder import CharacterTrainBuilder
 from datasets.email_dataset import EmailDataset
 
 
@@ -33,7 +33,7 @@ class ExperimentEmail:
         val_dataset = EmailDataset(val_file)
 
         # Get trainpipeline
-        builder = CharacterRnnTrainBuilder(epochs=epochs, batch_size=batch_size, kwargs=kwargs)
+        builder = CharacterTrainBuilder(epochs=epochs, batch_size=batch_size, kwargs=kwargs)
         train_pipeline = builder.get_pipeline(train_dataset)
 
         # Start training

@@ -148,6 +148,8 @@ class Train:
             if self.early_stopping and patience > self.patience_epochs:
                 self.logger.info("No decrease in loss for {} epochs and hence stopping".format(self.patience_epochs))
                 break
+            else:
+                self.logger.info("Patience is {}".format(patience))
 
             previous_loss = val_loss
 

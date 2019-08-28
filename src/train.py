@@ -94,9 +94,8 @@ class Train:
                 self.logger.debug(
                     "Batch {}/{}, total correct {}. loss {}".format(i, e, (correct * 100 / len), loss.item()))
 
-            self.logger.info("---Completed epoch {} of {}------".format(e, self.epochs))
             train_loss = train_total_loss
-            train_accuracy = total_correct * 100.0 / total_items
+            train_accuracy = (total_correct.float() * 100.0 / total_items).item()
             # Train confusion matrix
             self._print_confusion_matrix(target_items, predicted_items, "Train")
 
@@ -128,7 +127,13 @@ class Train:
             # TODO: ADD F-SCORE
             # print("###score: train_f_score### {}").format("")
             # print("###score: val_f_score### {}".format(""))
-            result_logs.append([e, train_loss, val_loss, train_accuracy.item(), val_accuracy.item()])
+
+            self.logger.info(
+                "epoch: {}, train_loss {}, val_loss {}, train_accuracy {}, val_accuracy {}".format(e, train_loss,
+                                                                                                   val_loss,
+                                                                                                   train_accuracy,
+                                                                                                   val_accuracy))
+            result_logs.append([e, train_loss, val_loss, train_accuracy, val_accuracy])
 
             if self.early_stopping and patience > self.patience_epochs:
                 self.logger.info("No decrease in loss for {} epochs and hence stopping".format(self.patience_epochs))
@@ -171,7 +176,7 @@ class Train:
                 predicted_items.extend(predicted_item.tolist())
 
         average_loss = total_loss
-        accuracy = total_correct * 100.0 / total_items
+        accuracy = (total_correct.float() * 100.0 / total_items).item()
         self._print_confusion_matrix(target_items, predicted_items, "Validation ")
 
         return average_loss, accuracy

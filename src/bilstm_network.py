@@ -25,7 +25,8 @@ class BiLstmNetwork(nn.Module):
         # Lstm Layer
         self.lstm = nn.LSTM(input_size, hidden_dim, n_layers, batch_first=True, bidirectional=True)
         # Fully connected layer, 2 is for bi-directional
-        self.fc = nn.Sequential(nn.Linear(hidden_dim * 2, output_size), nn.ReLU())
+        fc_size = 30
+        self.fc = nn.Sequential(nn.Linear(hidden_dim * 2, fc_size), nn.ReLU(), nn.Linear(fc_size, output_size))
 
     def forward(self, X):
         """

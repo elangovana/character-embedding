@@ -119,6 +119,7 @@ class Train:
 
             # Save snapshots
             if best_loss is None or val_loss < best_loss:
+                self.logger.info("Snapshotting as current loss {} is < previous best {}".format(val_loss, best_loss))
                 self.snapshotter.save(model, output_dir=output_dir, prefix="snapshot_lowest_loss_")
                 best_loss = val_loss
 

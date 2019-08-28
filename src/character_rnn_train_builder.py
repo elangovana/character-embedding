@@ -13,7 +13,7 @@
 # permissions and limitations under the License.
 # #############################################################################
 from torch import nn
-from torch.optim import SGD
+from torch.optim import Adam
 
 from bilstm_network import BiLstmNetwork
 from data_pipeline import DataPipeline
@@ -62,7 +62,8 @@ class CharacterRnnTrainBuilder:
                               hidden_dim=self.hidden_dim,
                               output_size=train_dataset.num_classes)
 
-        optimiser = SGD(lr=self.learning_rate, params=model.parameters())
+        # optimiser = SGD(lr=self.learning_rate, params=model.parameters())
+        optimiser = Adam(params=model.parameters())
         loss_func = nn.CrossEntropyLoss()
         train_pipeline = TrainPipeline(batch_size=self.batch_size,
                                        optimiser=optimiser,

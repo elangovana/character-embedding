@@ -12,6 +12,8 @@
 # express or implied. See the License for the specific language governing
 # permissions and limitations under the License.
 # #############################################################################
+import logging
+
 from torch import nn
 from torch.optim import Adam
 
@@ -38,6 +40,10 @@ class TrainBuilder:
         self.hidden_dim = kwargs.get("hidden_dim", 20)
         self.num_workers = num_workers
 
+    @property
+    def logger(self):
+        return logging.getLogger(__name__)
+
     def get_pipeline(self, train_dataset):
         trainer = Train(patience_epochs=self.patience_epochs, early_stopping=self.early_stopping, epochs=self.epochs)
 
@@ -57,14 +63,21 @@ class TrainBuilder:
 
         label_pipeline = LabelPipeline(label_encoder=label_encoder, label_reshaper=label_reshaper)
 
-        # Train pipeline
+        # Network
         model = BiLstmNetwork(input_size=text_to_index.max_index,
                               hidden_dim=self.hidden_dim,
                               output_size=train_dataset.num_classes)
+        self.logger.info("Using model {}".format(type(model)))
 
         # optimiser = SGD(lr=self.learning_rate, params=model.parameters())
         optimiser = Adam(params=model.parameters())
+        self.logger.info("Using optimiser {}".format(type(optimiser)))
+
+        # Loss function
         loss_func = nn.CrossEntropyLoss()
+        self.logger.info("Using loss function {}".format(type(loss_func)))
+
+        # Train pipeline
         train_pipeline = TrainPipeline(batch_size=self.batch_size,
                                        optimiser=optimiser,
                                        trainer=trainer,

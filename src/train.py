@@ -118,15 +118,12 @@ class Train:
             val_loss, val_accuracy = self._compute_validation_loss(val_data, model, loss_func)
 
             # Save snapshots
-            if val_loss < best_loss or best_loss is None:
+            if best_loss is None or val_loss < best_loss:
                 self.snapshotter.save(model, output_dir=output_dir, prefix="snapshot_lowest_loss_")
                 best_loss = val_loss
 
             # Patience, early stopping
-            if previous_loss is None:
-                previous_loss = val_loss
-
-            if val_loss >= previous_loss:
+            if previous_loss is not None and val_loss >= previous_loss:
                 patience += 1
             else:
                 # Reset patience if loss decreases

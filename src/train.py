@@ -117,13 +117,10 @@ class Train:
             # Validation loss
             val_loss, val_accuracy = self._compute_validation_loss(val_data, model, loss_func)
 
-            if best_loss is None:
-                best_loss = val_loss
-
             # Save snapshots
-            # TODO Check negative loss
-            if val_loss < best_loss:
+            if val_loss < best_loss or best_loss is None:
                 self.snapshotter.save(model, output_dir=output_dir, prefix="snapshot_lowest_loss_")
+                best_loss = val_loss
 
             # Patience, early stopping
             if previous_loss is None:
